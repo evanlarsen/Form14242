@@ -1,0 +1,34 @@
+﻿@model Form14242.Web.ViewModels.PromoterBrowserTemplateVM
+
+@{
+    Layout = null;
+}
+<div class="person">
+    <input type="button" value="Remove promoter" data-bind="click: $parent.removePromoter, visible: $parent.canRemovePromoter()" />
+    <table>
+        <tr>
+            <td>@Html.LabelFor(p => p.PromoterBrowserTemplate.Name)</td>
+            <td>@Html.TextBoxFor(p => p.PromoterBrowserTemplate.Name, new { data_bind = "attr: { name: promoterName() + 'Name' }" })</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(p => p.PromoterBrowserTemplate.SSN)</td>
+            <td>@Html.TextBoxFor(p => p.PromoterBrowserTemplate.SSN, new { data_bind = "attr: { name: promoterName() + 'SSN' }" })</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(p => p.PromoterBrowserTemplate.MailingAddress)</td>
+            <td>@Html.TextBoxFor(p => p.PromoterBrowserTemplate.MailingAddress, new { data_bind = "attr: { name: promoterName() + 'MailingAddress' }" })</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(p => p.PromoterBrowserTemplate.EmailAddress)</td>
+            <td>@Html.TextBoxFor(p => p.PromoterBrowserTemplate.EmailAddress, new { data_bind = "attr: { name: promoterName() + 'EmailAddress' }" })</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(p => p.PromoterBrowserTemplate.TelephoneNumber)</td>
+            <td>@Html.TextBoxFor(p => p.PromoterBrowserTemplate.TelephoneNumber, new { data_bind = "attr: { name: promoterName() + 'TelephoneNumber' }" })</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(p => p.PromoterBrowserTemplate.HeadquarterLocation)</td>
+            <td>@Html.TextBoxFor(p => p.PromoterBrowserTemplate.HeadquarterLocation, new { data_bind = "attr: { name: promoterName() + 'HeadquarterLocation' }" })</td>
+        </tr>
+    </table>
+</div>

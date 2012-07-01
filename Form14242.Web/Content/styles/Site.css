@@ -1,0 +1,98 @@
+body
+{
+    font-size: .85em;
+    font-family: "Trebuchet MS", Verdana, Helvetica, Sans-Serif;
+    color: #232323;
+    background-color: #fff;
+}
+
+header,
+footer,
+nav,
+section {
+    display: block;
+}
+
+/* Styles for basic forms
+-----------------------------------------------------------*/
+
+fieldset 
+{
+    border:1px solid #ddd;
+    padding:0 1.4em 1.4em 1.4em;
+    margin:0 0 1.5em 0;
+}
+
+legend 
+{
+    font-size:1.2em;
+    font-weight: bold;
+}
+
+textarea 
+{
+    min-height: 75px;
+}
+
+.editor-label 
+{
+    margin: 1em 0 0 0;
+}
+
+.editor-field 
+{
+    margin:0.5em 0 0 0;
+}
+
+
+/* Styles for validation helpers
+-----------------------------------------------------------*/
+.field-validation-error
+{
+    color: #ff0000;
+}
+
+.field-validation-valid
+{
+    display: none;
+}
+
+.input-validation-error
+{
+    border: 1px solid #ff0000;
+    background-color: #ffeeee;
+}
+
+.validation-summary-errors
+{
+    font-weight: bold;
+    color: #ff0000;
+}
+
+.validation-summary-valid
+{
+    display: none;
+}
+
+
+/* Layout
+--------------------------------------------------------*/
+#root { margin: 0 auto; width: 993px; position: relative; background-color: White; }
+#header { width: 100%; height: 85px; background-color: #369; }
+body { background-color: #ACACAC; }
+#content { padding: 24px 7px; }
+
+/* Form 14242 */
+.question-container { border-bottom: 12px solid #eee; padding: 12px 0; }
+.question-content, .sub-question-content { padding-left: 14px; }
+textarea, input[type=text] { width: 350px; }
+input[type=text].date { width: 125px; }
+.person { border: 2px dotted #aaa; padding: 12px 4px; margin-bottom: 4px; }
+input[type=button], input[type=file] { padding: 8px 12px; border-radius: 4px; cursor: pointer; text-shadow: 1px 1px 1px white; }
+p { margin: 0; }
+#contact-information input[type=text] { margin-left: 12px; }
+#contact-information { padding: 12px 0; border-bottom: 12px solid #eee; }
+#privacy-act-header { font-weight: bold; text-align: center; text-decoration: underline; }
+#privacy-act-content p { margin: 12px 0; }
+#form-actions { padding: 24px 0; }
+#form-actions input[type=submit] { padding: 12px 24px; font-weight: bold; font-size: 2em; color: Blue; cursor: pointer; }

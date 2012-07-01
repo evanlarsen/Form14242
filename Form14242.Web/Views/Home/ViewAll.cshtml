@@ -1,0 +1,31 @@
+﻿@model IEnumerable<Form14242.Web.ViewModels.Form14242Model>
+
+@{
+    ViewBag.Title = "ViewAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section header {
+    <style type="text/css">
+        table td { padding: 4px 8px; }
+        table tr:nth-child(even) { background-color: #eee; }
+    </style>
+}
+<h2>View All</h2>
+
+<table>
+<thead>
+    <tr>
+        <td>Action</td>
+        <td>Form ID</td>
+        <td>Date Submitted</td>
+    </tr>
+</thead>
+@foreach (var form in Model)
+{
+    <tr>
+        <td>@Html.ActionLink("View", "View", new { id = form.ID })</td>
+        <td>@form.ID</td>
+        <td>@form.ReportedDate</td>
+    </tr>
+}
+</table>

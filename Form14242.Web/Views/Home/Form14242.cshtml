@@ -1,0 +1,404 @@
+﻿@model Form14242.Web.ViewModels.Form14242Model
+@{
+    ViewBag.Title = "Index";
+}
+
+@section header {
+    <script src="@Url.Content("~/Content/scripts/form14242.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('.date').datepicker();
+
+            var vm = new Form14242();
+            ko.applyBindings(vm, document.getElementById('form-body'));
+        });
+    </script>
+}
+
+<div id="form-header">
+    <h2>Report Suspected Abusive Tax Promotions or Preparers</h2>
+    <span>OMB Number 1545-2219</span>
+    <div id="form-info">
+        <span>
+            Use Form 14242 to report a suspected abusive tax avoidance scheme and/or tax return preparers who promote such schemes. More
+            information about tax avoidance schemes is available at 
+            <a href="//www.irs.gov/scams">www.irs.gov/scams</a>
+        </span>
+    </div>
+</div>
+@using (Html.BeginForm())
+{
+<div id="form-body">
+    <div class="question-container">
+        <div class="question-header"><span><strong>1. a.</strong> Describe the suspected tax scheme being promoted</span></div>
+        <div class="question-content">
+            @Html.TextAreaFor(p => p.SuspectedTaxScheme)
+
+            <div class="sub-question-container">
+                <div class="sub-question-header"><span><strong>b.</strong> Was the tax scheme promoted as a "new" legal tax strategy</span></div>
+                <div class="sub-question-content">
+                    @Html.RadioButtonFor(p => p.TaxSchemePromotedAsNewLegalTaxStrategy, true, new { id = "TaxSchemePromotedAsNewLegalTaxStrategy_true" })
+                    <label for="TaxSchemePromotedAsNewLegalTaxStrategy_true">Yes</label>
+                    @Html.RadioButtonFor(p => p.TaxSchemePromotedAsNewLegalTaxStrategy, false, new { id = "TaxSchemePromotedAsNewLegalTaxStrategy_false" })
+                    <label for="TaxSchemePromotedAsNewLegalTaxStrategy_false">No</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-container">
+        <div class="question-header"><span><strong>2.</strong> How did you become aware of the promotion or promoter (Internet, email, TV, flyer, newspaper, magazine, friend, relative, etc.).</span></div>
+        <div class="question-content">
+            @Html.TextAreaFor(p => p.HowBecameAwareOfPromotionOrPromoter)
+        </div>
+    </div>
+
+    <div class="question-container">
+        <div class="question-header"><span><strong>3.</strong> When did you first learn about the tax promotion (mm/dd/yyyy)</span></div>
+        <div class="question-content">
+            @Html.TextBoxFor(p => p.DateLearnedAboutTaxPromotion, new { @class = "date" })
+        </div>
+    </div>
+
+    <div class="question-container">
+        <div class="question-header"><span><strong>4.</strong> Promoter Information (If more than one promoter is involved, provide information on all promoters</span></div>
+        <div class="question-content">
+            <div class="promoters-container" data-bind="foreach: { data: Promoters, afterAdd: afterAdd, beforeRemove: beforeRemove }">
+                @{ Html.RenderAction("_PromoterBrowserTemplate"); }
+            </div>
+            <input type="button" value="Add another promoter" data-bind="click: addPromoter" />
+        </div>
+    </div>
+
+    <div class="question-container">
+        <div class="question-header"><span><strong>5.</strong> Describe the function/role of each person involved in the promotion</span></div>
+        <div class="question-content">
+            @Html.TextAreaFor(p => p.DescriptionOfInvolvement)
+        </div>
+    </div>
+
+    <div class="question-container">
+        <div class="question-header"><span><strong>6.</strong> Do you have copies of any promotional material supplied by the promoter</span></div>
+        <div class="question-content">
+            @Html.RadioButtonFor(p => p.HaveCopiesOfPromotionalMaterial, true, new { id = "HaveCopiesOfPromotionalMaterial_true", data_bind = "checked: isPromotionalMaterial" })
+            <label for="HaveCopiesOfPromotionalMaterial_true">Yes</label>
+            @Html.RadioButtonFor(p => p.HaveCopiesOfPromotionalMaterial, false, new { id = "HaveCopiesOfPromotionalMaterial_false", data_bind = "checked: isPromotionalMaterial" })
+            <label for="HaveCopiesOfPromotionalMaterial_false">No</label>
+        
+            <div class="sub-question-container" data-bind="visible: isPromotionalMaterial() === 'True'">
+                <div class="sub-question-header"><span>If <strong>YES,</strong> please attach promotional material</span></div>
+                <div class="sub-question-content">
+                    <div class="upload-files" data-bind="foreach: { data: PromotionalMaterial, afterAdd: afterAdd, beforeRemove: beforeRemove }">
+                        <div class="file-container">
+                            <input type="file" data-bind="attr: { name: promotionalMaterialName() }" />
+                            <input type="button" value="remove attachment" data-bind="click: $parent.removePromotionalMaterial" />
+                        </div>
+                    </div>
+                    <input type="button" value="Attach another promotional material" data-bind="click: addPromotionalMaterial" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-container">
+        <div class="question-header"><span><strong>7. a.</strong> What was the cost for the promotional material</span></div>
+        <div class="question-content">
+            @Html.TextBoxFor(p => p.CostForPromotionalMaterial)
+
+            <div class="sub-question-container">
+                <div class="sub-question-header"><span><strong>b.</strong> Did the cost include</span></div>
+                <div class="sub-question-content">
+                    <table>
+                        <tr>
+                            <td><span>A monthly service fee</span></td>
+                            <td>
+                                @Html.RadioButtonFor(p => p.CostIncludedMonthlyServiceFee, "yes", new { id = "CostIncludedMonthlyServiceFee_yes" })
+                                <label for="CostIncludedMonthlyServiceFee_yes">Yes</label>
+                                @Html.RadioButtonFor(p => p.CostIncludedMonthlyServiceFee, "no", new { id = "CostIncludedMonthlyServiceFee_no" })
+                                <label for="CostIncludedMonthlyServiceFee_no">No</label>
+                                @Html.RadioButtonFor(p => p.CostIncludedMonthlyServiceFee, "unknown", new { id = "CostIncludedMonthlyServiceFee_unknown" })
+                                <label for="CostIncludedMonthlyServiceFee_unknown">Unknown</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><span>An audit protection fee</span></td>
+                            <td>
+                                @Html.RadioButtonFor(p => p.CostIncludedAuditProtectionFee, "yes", new { id = "CostIncludedAuditProtectionFee_yes" })
+                                <label for="CostIncludedAuditProtectionFee_yes">Yes</label>
+                                @Html.RadioButtonFor(p => p.CostIncludedAuditProtectionFee, "no", new { id = "CostIncludedAuditProtectionFee_no" })
+                                <label for="CostIncludedAuditProtectionFee_no">No</label>
+                                @Html.RadioButtonFor(p => p.CostIncludedAuditProtectionFee, "unknown", new { id = "CostIncludedAuditProtectionFee_unknown" })
+                                <label for="CostIncludedAuditProtectionFee_unknown">Unknown</label>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+    <div class="question-container">
+        <div class="question-header"><span><strong>8.</strong> How did you obtain the promotional information (Internet, mail, email, telephone solicitation, professional acquaintance, etc.).</span></div>
+        <div class="question-content">
+            @Html.TextAreaFor(p => p.HowDidObtainPromotionalInformation)
+        </div>
+    </div>
+
+    <div class="question-container">
+        <div class="question-header"><span><strong>9. a.</strong> Did the promoter hold any seminars or meetings to promote the tax scheme</span></div>
+        <div class="question-content">
+            @Html.RadioButtonFor(p => p.PromoterHeldSeminarsToPromote, "yes", new { id = "PromoterHeldSeminarsToPromote_yes", data_bind = "checked: isSeminarsHeld" })
+            <label for="PromoterHeldSeminarsToPromote_yes">Yes</label>
+            @Html.RadioButtonFor(p => p.PromoterHeldSeminarsToPromote, "no", new { id = "PromoterHeldSeminarsToPromote_no", data_bind = "checked: isSeminarsHeld" })
+            <label for="PromoterHeldSeminarsToPromote_no">No</label>
+            @Html.RadioButtonFor(p => p.PromoterHeldSeminarsToPromote, "unknown", new { id = "PromoterHeldSeminarsToPromote_unknown", data_bind = "checked: isSeminarsHeld" })
+            <label for="PromoterHeldSeminarsToPromote_unknown">Unknown</label>
+
+            <div class="sub-question-container" data-bind="visible: isSeminarsHeld() === 'yes'">
+                <div class="sub-question-header"><span><strong>b.</strong> If you answered YES in 9a, what was the cost associated with attending the seminar or meeting</span></div>
+                <div class="sub-question-content">
+                    @Html.TextBoxFor(p => p.CostAssociatedWithSeminar)
+                </div>
+            </div>
+
+            <div class="sub-question-container" data-bind="visible: isSeminarsHeld() === 'yes'">
+                <div class="sub-question-header"><span><strong>c.</strong> Where was the seminar or meeting held</span></div>
+                <div class="sub-question-content">
+                    @Html.TextBoxFor(p => p.LocationOfSeminar)
+                </div>
+            </div>
+
+            <div class="sub-question-container" data-bind="visible: isSeminarsHeld() === 'yes'">
+                <div class="sub-question-header"><span><strong>d.</strong> When was the seminar or meeting held (mm/dd/yyyy)</span></div>
+                <div class="sub-question-content">
+                    @Html.TextBoxFor(p => p.DateSeminarHeld, new { @class = "date" })
+                </div>
+            </div>
+
+            <div class="sub-question-container" data-bind="visible: isSeminarsHeld() === 'yes'">
+                <div class="sub-question-header"><span><strong>e.</strong> Did you personally attend any seminar or meeting associated with the promotion or promoter</span></div>
+                <div class="sub-question-content">
+                    @Html.RadioButtonFor(p => p.HasPersonallyAttendedSeminar, true, new { id = "HasPersonallyAttendedSeminar_true" })
+                    <label for="HasPersonallyAttendedSeminar_true">Yes</label>
+                    @Html.RadioButtonFor(p => p.HasPersonallyAttendedSeminar, false, new { id = "HasPersonallyAttendedSeminar_false" })
+                    <label for="HasPersonallyAttendedSeminar_false">No</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-container">
+        <div class="question-header"><span><strong>10.</strong> How is the promoter involved in the promotion (Describe promoters involvement)</span></div>
+        <div class="question-content">
+            @Html.TextAreaFor(p => p.HowPromoterInvolved)
+        </div>
+    </div>
+
+    <div class="question-container">
+        <div class="question-header"><span><strong>11.</strong> Who is the target group of the promotion (Describe industry or type of taxpayer, i.e. nurse, policeman, home business, etc.)</span></div>
+        <div class="question-content">
+            @Html.TextAreaFor(p => p.TargetedGroupOfPromotion)
+        </div>
+    </div>
+
+    <div class="question-container">
+        <div class="question-header"><span><strong>12. a.</strong> Are you aware of any similar promotions in your area</span></div>
+        <div class="question-content">
+            @Html.RadioButtonFor(p => p.AnyOtherPromotionsInArea, true, new { id = "AnyOtherPromotionsInArea_true", data_bind = "checked: isOtherPromotionsInArea" })
+            <label for="AnyOtherPromotionsInArea_true">Yes</label>
+            @Html.RadioButtonFor(p => p.AnyOtherPromotionsInArea, false, new { id = "AnyOtherPromotionsInArea_false", data_bind = "checked: isOtherPromotionsInArea" })
+            <label for="AnyOtherPromotionsInArea_false">No</label>
+
+            <div class="sub-question-container" data-bind="visible: isOtherPromotionsInArea() === 'True'">
+                <div class="sub-question-header"><span><strong>b.</strong> If YES, describe the other promotions and any similarities they have to this promotion</span></div>
+                <div class="sub-question-content">
+                    @Html.TextAreaFor(p => p.AnyOtherPromotionsInAreaDescription)
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-container">
+        <div class="question-header"><span><strong>13.</strong> Is the promotion still being advertised</span></div>
+        <div class="question-content">
+            @Html.RadioButtonFor(p => p.PromotionStillBeingAdvertised, true, new { id = "PromotionStillBeingAdvertised_true" })
+            <label for="PromotionStillBeingAdvertised_true">Yes</label>
+            @Html.RadioButtonFor(p => p.PromotionStillBeingAdvertised, false, new { id = "PromotionStillBeingAdvertised_false" })
+            <label for="PromotionStillBeingAdvertised_false">No</label>
+        </div>
+    </div>
+
+    <div class="question-container">
+        <div class="question-header"><span><strong>14.</strong> Describe the tax benefits of the promotion (Provide any information used to explain the tax benefits of the promotion)</span></div>
+        <div class="question-content">
+            @Html.TextAreaFor(p => p.TaxBenifitsOfPromotion)
+        </div>
+    </div>
+
+    <div class="question-container">
+        <div class="question-header"><span><strong>15.</strong> Describe the geographic scope of the promotion. For example, is it restricted to a small area, nationwide, or worldwide</span></div>
+        <div class="question-content">
+            @Html.TextAreaFor(p => p.GeographicScopeOfThePromotion)
+        </div>
+    </div>
+
+    <div class="question-container">
+        <div class="question-header"><span><strong>16.</strong> Do you know of any tax preparers completing returns for investors or promoters based upon this promotion</span></div>
+        <div class="question-content">
+            @Html.RadioButtonFor(p => p.AnyTaxPreparersCompletingReturns, true, new { id = "AnyTaxPreparersCompletingReturns_true", data_bind = "checked: isAnyTaxPreparersCompletingReturns" })
+            <label for="AnyTaxPreparersCompletingReturns_true">Yes</label>
+            @Html.RadioButtonFor(p => p.AnyTaxPreparersCompletingReturns, false, new { id = "AnyTaxPreparersCompletingReturns_false", data_bind = "checked: isAnyTaxPreparersCompletingReturns" })
+            <label for="AnyTaxPreparersCompletingReturns_false">No</label>
+
+            <div class="sub-question-container" data-bind="visible: isAnyTaxPreparersCompletingReturns() === 'True'">
+                <div class="sub-question-header"><span>If <strong>YES,</strong> provide the following information (if available) (if more than one preparer is involved, provide information on all preparers)</span></div>
+                <div class="sub-question-content">
+                    <div class="preparers-container" data-bind="foreach: { data: Preparers, afterAdd: afterAdd, beforeRemove: beforeRemove }">
+                        @{ Html.RenderAction("_PreparerBrowserTemplate"); }
+                    </div>
+                    <input type="button" value="Add another preparer" data-bind="click: addPreparer" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-container">
+        <div class="question-header"><span><strong>17.</strong> Did you have any private/personal conversations witht he promoter/accountant/return preparer/associate</span></div>
+        <div class="question-content">
+            @Html.RadioButtonFor(p => p.AnyPrivateConversations, true, new { id = "AnyPrivateConversations_true", data_bind = "checked: isAnyPrivateConversations" })
+            <label for="AnyPrivateConversations_true">Yes</label>
+            @Html.RadioButtonFor(p => p.AnyPrivateConversations, false, new { id = "AnyPrivateConversations_false", data_bind = "checked: isAnyPrivateConversations" })
+            <label for="AnyPrivateConversations_false">No</label>
+
+            <div class="sub-question-container" data-bind="visible: isAnyPrivateConversations() === 'True'">
+                <div class="sub-question-header"><span>If <strong>YES,</strong> provide the following information (if available)</span></div>
+                <div class="sub-question-content">
+                    <p>@Html.LabelFor(p => p.WhomDidYouHaveConversation)</p>
+                    @Html.TextBoxFor(p => p.WhomDidYouHaveConversation)
+                    <p>@Html.LabelFor(p => p.WhatWasSaidDuringConversation)</p>
+                    @Html.TextAreaFor(p => p.WhatWasSaidDuringConversation)
+                    <p>@Html.LabelFor(p => p.LocationOfConversation)</p>
+                    @Html.TextBoxFor(p => p.LocationOfConversation)
+                    <p>@Html.LabelFor(p => p.DateOfConversation)</p>
+                    @Html.TextBoxFor(p => p.DateOfConversation, new { @class = "date" })
+                    <p>@Html.LabelFor(p => p.PeoplePresentDuringConversation)</p>
+                    @Html.TextAreaFor(p => p.PeoplePresentDuringConversation)
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-container">
+        <div class="question-header"><span><strong>18. a.</strong> What is your current relationship with the promoter(s)</span></div>
+        <div class="question-content">
+            @Html.TextAreaFor(p => p.CurrentRelationshipWithPromoter)
+
+            <div class="sub-question-container">
+                <div class="sub-question-header"><span><strong>b.</strong> Did you have personal/telephone contact with any of the promoters</span></div>
+                <div class="sub-question-content">
+                    @Html.RadioButtonFor(p => p.HadPersonalContactWithPromoter, true, new { id = "HadPersonalContactWithPromoter_true" })
+                    <label for="HadPersonalContactWithPromoter_true">Yes</label>
+                    @Html.RadioButtonFor(p => p.HadPersonalContactWithPromoter, false, new { id = "HadPersonalContactWithPromoter_false" })
+                    <label for="HadPersonalContactWithPromoter_false">No</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-container">
+        <div class="question-header"><span><strong>19.</strong> Do you know any individuals/businesses that have purchased or used the promotion</span></div>
+        <div class="question-content">
+            @Html.RadioButtonFor(p => p.AnyPeoplePurchasePromotion, true, new { id = "AnyPeoplePurchasePromotion_true", data_bind = "checked: isAnyPeoplePurchasePromotion" })
+            <label for="AnyPeoplePurchasePromotion_true">Yes</label>
+            @Html.RadioButtonFor(p => p.AnyPeoplePurchasePromotion, false, new { id = "AnyPeoplePurchasePromotion_false", data_bind = "checked: isAnyPeoplePurchasePromotion" })
+            <label for="AnyPeoplePurchasePromotion_false">No</label>
+
+            <div class="sub-question-container" data-bind="visible: isAnyPeoplePurchasePromotion() === 'True'">
+                <div class="sub-question-header"><span>If <strong>YES,</strong> provide their names</span></div>
+                <div class="sub-question-content">
+                    @Html.TextAreaFor(p => p.NamesOfPeopleWhoPurchasedPromotion)
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-container">
+        <div class="question-header"><span><strong>20. a.</strong> Did you purchase and use the "promotion package"</span></div>
+        <div class="question-content">
+            @Html.RadioButtonFor(p => p.HasPurchasedAndUsedPromotion, true, new { id = "HasPurchasedAndUsedPromotion_true", data_bind = "checked: hasPurchasedAndUsedPromotion" })
+            <label for="HasPurchasedAndUsedPromotion_true">Yes</label>
+            @Html.RadioButtonFor(p => p.HasPurchasedAndUsedPromotion, false, new { id = "HasPurchasedAndUsedPromotion_false", data_bind = "checked: hasPurchasedAndUsedPromotion" })
+            <label for="HasPurchasedAndUsedPromotion_false">No</label>
+
+            <div class="sub-question-container" data-bind="visible: hasPurchasedAndUsedPromotion() === 'True'">
+                <div class="sub-question-header"><strong>b.</strong> If <strong>YES,</strong> have you amended your tax returns</div>
+                <div class="sub-question-content">
+                    @Html.RadioButtonFor(p => p.HasAmendedTaxReturns, true, new { id = "HasAmendedTaxReturns_true" })
+                    <label for="HasAmendedTaxReturns_true">Yes</label>
+                    @Html.RadioButtonFor(p => p.HasAmendedTaxReturns, false, new { id = "HasAmendedTaxReturns_false" })
+                    <label for="HasAmendedTaxReturns_false">No</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="contact-information">
+        <p><strong>Contact information</strong> (Providing your contact information is optional, but will be helpful if we have questions, and will allow us to acknowledge receipt of the referral.)</p>
+
+        <table>
+            <tr>
+                <td>@Html.LabelFor(p => p.ReporterName)</td>
+                <td>@Html.TextBoxFor(p => p.ReporterName)</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(p => p.ReporterMailingAddress)</td>
+                <td>@Html.TextBoxFor(p => p.ReporterMailingAddress)</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(p => p.ReporterTelephoneNumber)</td>
+                <td>@Html.TextBoxFor(p => p.ReporterTelephoneNumber)</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(p => p.ReporterEmailAddress)</td>
+                <td>@Html.TextBoxFor(p => p.ReporterEmailAddress)</td>
+            </tr>
+        </table>
+    </div>
+
+    <div id="privacy-act">
+        <div id="privacy-act-header">Privacy Act and Paperwork Reduction Act Notice</div>
+        <div id="privacy-act-content">
+            <p>
+                This information is solicited under authority of 5 U.S.C. 301, 26 U.S.C. 7801 and 26 U.S.C. 7803. The primary purpose of this form is to
+                report violation of the Internal Revenue laws.
+            </p>
+            <p>
+                Routine uses of this information include giving it to the Department of Justice for civil and criminal litigation. We may also disclose this
+                information to other countries under a tax treaty, to federal and state agencies to enforce federal non-tax criminal laws, or to federal law
+                enforcement and intelligence agencies to combat terrorism.
+            </p>
+            <p>
+                Providing this information is voluntary. Not providing all or part of the information will not affect you. Providing false or fraudulent
+                information may subject you to penalties.
+            </p>
+            <p>
+                You are not required to provide the information requested on a form that is subject to the Paperwork Reduction Act unless the form
+                displays a valid OMB control number. Books or records relating to a form or its instructions must be retained as long as their contents
+                may become material in the administration of any Internal Revenue law. Generally, tax returns and return information are confidential,
+                as required by section 6103.
+            </p>
+            <p>
+                The time needed to complete and file this form will vary depending on individual circumstances. The estimated average time is:
+                Preparing and sending the form to the IRS should involve 10 minutes. If you have comments concerning the accuracy of the time
+                estimate or suggestions for making this form simpler, we would be happy to hear from you. You can write to the IRS at the address
+                listed in the Instructions.
+            </p>
+        </div>
+    </div>
+
+    <div id="form-actions">
+        <input type="submit" value="Submit Form" />
+    </div>
+    
+</div>
+}

@@ -1,0 +1,380 @@
+﻿@model Form14242.Web.ViewModels.Form14242Model
+
+@{
+    ViewBag.Title = "View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section header {
+    <style type="text/css">
+        .promoters-container table { border-bottom: 1px solid #ccc; margin-top: 8px; }
+        .promoters-container table:last-child { border-bottom: none; }
+        .promoters-container table tr td { padding-right: 12px; }
+    </style>
+}
+
+@Html.ActionLink("<- back", "Index")
+
+<h2>Form 14242</h2>
+
+<div id="form-body">
+    <div class="question-container">
+        <div class="question-header"><span><strong>1. a.</strong> Describe the suspected tax scheme being promoted</span></div>
+        <div class="question-content">
+            @Model.SuspectedTaxScheme
+
+            <div class="sub-question-container">
+                <div class="sub-question-header"><span><strong>b.</strong> Was the tax scheme promoted as a "new" legal tax strategy</span></div>
+                <div class="sub-question-content">
+                    @Model.TaxSchemePromotedAsNewLegalTaxStrategy
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-container">
+        <div class="question-header"><span><strong>2.</strong> How did you become aware of the promotion or promoter (Internet, email, TV, flyer, newspaper, magazine, friend, relative, etc.).</span></div>
+        <div class="question-content">
+            @Model.HowBecameAwareOfPromotionOrPromoter
+        </div>
+    </div>
+
+    <div class="question-container">
+        <div class="question-header"><span><strong>3.</strong> When did you first learn about the tax promotion (mm/dd/yyyy)</span></div>
+        <div class="question-content">
+            @Model.DateLearnedAboutTaxPromotion
+        </div>
+    </div>
+
+    <div class="question-container">
+        <div class="question-header"><span><strong>4.</strong> Promoter Information (If more than one promoter is involved, provide information on all promoters</span></div>
+        <div class="question-content">
+            <div class="promoters-container">
+                @if (Model.Promoters != null)
+                {
+                    foreach (var promoter in Model.Promoters)
+                    {
+                        <table>
+                            <tr>
+                                <td><span>Name of promoter</span></td>
+                                <td>@promoter.Name</td>
+                            </tr>
+                            <tr>
+                                <td>Social Security Number (SSN) of promoter</td>
+                                <td>@promoter.SSN</td>
+                            </tr>
+                            <tr>
+                                <td>Mailing address of promoter</td>
+                                <td>@promoter.MailingAddress</td>
+                            </tr>
+                            <tr>
+                                <td>Email address of promoter</td>
+                                <td>@promoter.EmailAddress</td>
+                            </tr>
+                            <tr>
+                                <td>Telephone number of promoter</td>
+                                <td>@promoter.TelephoneNumber</td>
+                            </tr>
+                            <tr>
+                                <td>Headquarter location of promoter</td>
+                                <td>@promoter.HeadquarterLocation</td>
+                            </tr>
+                        </table>    
+                    }
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="question-container">
+        <div class="question-header"><span><strong>5.</strong> Describe the function/role of each person involved in the promotion</span></div>
+        <div class="question-content">
+            @Model.DescriptionOfInvolvement
+        </div>
+    </div>
+
+    <div class="question-container">
+        <div class="question-header"><span><strong>6.</strong> Do you have copies of any promotional material supplied by the promoter</span></div>
+        <div class="question-content">
+            @Model.HaveCopiesOfPromotionalMaterial
+        
+            @if (Model.HaveCopiesOfPromotionalMaterial.HasValue && Model.HaveCopiesOfPromotionalMaterial.Value)
+            {
+            <div class="sub-question-container">
+                <div class="sub-question-header"><span>If <strong>YES,</strong> please attach promotional material</span></div>
+                <div class="sub-question-content">
+                    <div class="upload-files">
+                        <div class="file-container">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+
+    <div class="question-container">
+        <div class="question-header"><span><strong>7. a.</strong> What was the cost for the promotional material</span></div>
+        <div class="question-content">
+            @Model.CostForPromotionalMaterial
+
+            <div class="sub-question-container">
+                <div class="sub-question-header"><span><strong>b.</strong> Did the cost include</span></div>
+                <div class="sub-question-content">
+                    <table>
+                        <tr>
+                            <td><span>A monthly service fee</span></td>
+                            <td>
+                                @Model.CostIncludedMonthlyServiceFee
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><span>An audit protection fee</span></td>
+                            <td>
+                                @Model.CostIncludedAuditProtectionFee
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+    <div class="question-container">
+        <div class="question-header"><span><strong>8.</strong> How did you obtain the promotional information (Internet, mail, email, telephone solicitation, professional acquaintance, etc.).</span></div>
+        <div class="question-content">
+            @Model.HowDidObtainPromotionalInformation
+        </div>
+    </div>
+
+    <div class="question-container">
+        <div class="question-header"><span><strong>9. a.</strong> Did the promoter hold any seminars or meetings to promote the tax scheme</span></div>
+        <div class="question-content">
+            @Model.PromoterHeldSeminarsToPromote
+
+            @if (!string.IsNullOrWhiteSpace(Model.PromoterHeldSeminarsToPromote) && Model.PromoterHeldSeminarsToPromote.Equals("yes", StringComparison.CurrentCultureIgnoreCase))
+            {
+            <div class="sub-question-container">
+                <div class="sub-question-header"><span><strong>b.</strong> If you answered YES in 9a, what was the cost associated with attending the seminar or meeting</span></div>
+                <div class="sub-question-content">
+                    @Model.CostAssociatedWithSeminar
+                </div>
+            </div>
+
+            <div class="sub-question-container">
+                <div class="sub-question-header"><span><strong>c.</strong> Where was the seminar or meeting held</span></div>
+                <div class="sub-question-content">
+                    @Model.LocationOfSeminar)
+                </div>
+            </div>
+
+            <div class="sub-question-container">
+                <div class="sub-question-header"><span><strong>d.</strong> When was the seminar or meeting held (mm/dd/yyyy)</span></div>
+                <div class="sub-question-content">
+                    @Model.DateSeminarHeld
+                </div>
+            </div>
+
+            <div class="sub-question-container">
+                <div class="sub-question-header"><span><strong>e.</strong> Did you personally attend any seminar or meeting associated with the promotion or promoter</span></div>
+                <div class="sub-question-content">
+                    @Model.HasPersonallyAttendedSeminar
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+
+    <div class="question-container">
+        <div class="question-header"><span><strong>10.</strong> How is the promoter involved in the promotion (Describe promoters involvement)</span></div>
+        <div class="question-content">
+            @Model.HowPromoterInvolved
+        </div>
+    </div>
+
+    <div class="question-container">
+        <div class="question-header"><span><strong>11.</strong> Who is the target group of the promotion (Describe industry or type of taxpayer, i.e. nurse, policeman, home business, etc.)</span></div>
+        <div class="question-content">
+            @Model.TargetedGroupOfPromotion
+        </div>
+    </div>
+
+    <div class="question-container">
+        <div class="question-header"><span><strong>12. a.</strong> Are you aware of any similar promotions in your area</span></div>
+        <div class="question-content">
+            @Model.AnyOtherPromotionsInArea
+
+            @if (Model.AnyOtherPromotionsInArea.HasValue && Model.AnyOtherPromotionsInArea.Value)
+            {
+            <div class="sub-question-container">
+                <div class="sub-question-header"><span><strong>b.</strong> If YES, describe the other promotions and any similarities they have to this promotion</span></div>
+                <div class="sub-question-content">
+                    @Model.AnyOtherPromotionsInAreaDescription
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+
+    <div class="question-container">
+        <div class="question-header"><span><strong>13.</strong> Is the promotion still being advertised</span></div>
+        <div class="question-content">
+            @Model.PromotionStillBeingAdvertised
+        </div>
+    </div>
+
+    <div class="question-container">
+        <div class="question-header"><span><strong>14.</strong> Describe the tax benefits of the promotion (Provide any information used to explain the tax benefits of the promotion)</span></div>
+        <div class="question-content">
+            @Model.TaxBenifitsOfPromotion
+        </div>
+    </div>
+
+    <div class="question-container">
+        <div class="question-header"><span><strong>15.</strong> Describe the geographic scope of the promotion. For example, is it restricted to a small area, nationwide, or worldwide</span></div>
+        <div class="question-content">
+            @Model.GeographicScopeOfThePromotion
+        </div>
+    </div>
+
+    <div class="question-container">
+        <div class="question-header"><span><strong>16.</strong> Do you know of any tax preparers completing returns for investors or promoters based upon this promotion</span></div>
+        <div class="question-content">
+            @Model.AnyTaxPreparersCompletingReturns
+
+            @if (Model.AnyTaxPreparersCompletingReturns.HasValue && Model.AnyTaxPreparersCompletingReturns.Value)
+            {
+            <div class="sub-question-container">
+                <div class="sub-question-header"><span>If <strong>YES,</strong> provide the following information (if available) (if more than one preparer is involved, provide information on all preparers)</span></div>
+                <div class="sub-question-content">
+                    <div class="preparers-container">
+                        @if (Model.Preparers != null)
+                        {
+                            foreach (var preparer in Model.Preparers)
+                            {
+                                <table>
+                                    <tr>
+                                        <td>Name of preparer(s)</td>
+                                        <td>@preparer.Name</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Mailing address of preparer(s)</td>
+                                        <td>@preparer.MailingAddress</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Telephone number of preparer(s)</td>
+                                        <td>@preparer.TelephoneNumber</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Social Security Number (SSN) of preparer(s)</td>
+                                        <td>@preparer.SSN</td>
+                                    </tr>
+                                </table>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+
+    <div class="question-container">
+        <div class="question-header"><span><strong>17.</strong> Did you have any private/personal conversations witht he promoter/accountant/return preparer/associate</span></div>
+        <div class="question-content">
+            @Model.AnyPrivateConversations
+
+            @if (Model.AnyPrivateConversations.HasValue && Model.AnyPrivateConversations.Value)
+            {
+            <div class="sub-question-container">
+                <div class="sub-question-header"><span>If <strong>YES,</strong> provide the following information (if available)</span></div>
+                <div class="sub-question-content">
+                    <p>@Html.LabelFor(p => p.WhomDidYouHaveConversation)</p>
+                    @Model.WhomDidYouHaveConversation
+                    <p>@Html.LabelFor(p => p.WhatWasSaidDuringConversation)</p>
+                    @Model.WhatWasSaidDuringConversation
+                    <p>@Html.LabelFor(p => p.LocationOfConversation)</p>
+                    @Model.LocationOfConversation
+                    <p>@Html.LabelFor(p => p.DateOfConversation)</p>
+                    @Model.DateOfConversation
+                    <p>@Html.LabelFor(p => p.PeoplePresentDuringConversation)</p>
+                    @Model.PeoplePresentDuringConversation
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+
+    <div class="question-container">
+        <div class="question-header"><span><strong>18. a.</strong> What is your current relationship with the promoter(s)</span></div>
+        <div class="question-content">
+            @Model.CurrentRelationshipWithPromoter
+
+            <div class="sub-question-container">
+                <div class="sub-question-header"><span><strong>b.</strong> Did you have personal/telephone contact with any of the promoters</span></div>
+                <div class="sub-question-content">
+                    @Model.HadPersonalContactWithPromoter
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-container">
+        <div class="question-header"><span><strong>19.</strong> Do you know any individuals/businesses that have purchased or used the promotion</span></div>
+        <div class="question-content">
+            @Model.AnyPeoplePurchasePromotion
+
+            @if (Model.AnyPeoplePurchasePromotion.HasValue && Model.AnyPeoplePurchasePromotion.Value)
+            {
+            <div class="sub-question-container">
+                <div class="sub-question-header"><span>If <strong>YES,</strong> provide their names</span></div>
+                <div class="sub-question-content">
+                    @Model.NamesOfPeopleWhoPurchasedPromotion
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+
+    <div class="question-container">
+        <div class="question-header"><span><strong>20. a.</strong> Did you purchase and use the "promotion package"</span></div>
+        <div class="question-content">
+            @Model.HasPurchasedAndUsedPromotion
+
+            @if (Model.HasPurchasedAndUsedPromotion.HasValue && Model.HasPurchasedAndUsedPromotion.Value)
+            {
+            <div class="sub-question-container">
+                <div class="sub-question-header"><strong>b.</strong> If <strong>YES,</strong> have you amended your tax returns</div>
+                <div class="sub-question-content">
+                    @Model.HasAmendedTaxReturns
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+
+    <div id="contact-information">
+        <p><strong>Contact information</strong> (Providing your contact information is optional, but will be helpful if we have questions, and will allow us to acknowledge receipt of the referral.)</p>
+
+        <table>
+            <tr>
+                <td>@Html.LabelFor(p => p.ReporterName)</td>
+                <td>@Model.ReporterName</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(p => p.ReporterMailingAddress)</td>
+                <td>@Model.ReporterMailingAddress</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(p => p.ReporterTelephoneNumber)</td>
+                <td>@Model.ReporterTelephoneNumber</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(p => p.ReporterEmailAddress)</td>
+                <td>@Model.ReporterEmailAddress</td>
+            </tr>
+        </table>
+    </div>
+
+    @Html.ActionLink("<- back", "Index")
+</div>

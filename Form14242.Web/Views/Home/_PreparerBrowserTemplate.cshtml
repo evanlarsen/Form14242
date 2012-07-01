@@ -1,0 +1,25 @@
+﻿@model Form14242.Web.ViewModels.PreparerBrowserTemplateVM
+
+@{ Layout = null; }
+
+<div class="person">
+    <input type="button" value="Remove preparer" data-bind="click: $parent.removePreparer, visible: $parent.canRemovePreparer()" />
+    <table>
+        <tr>
+            <td>@Html.LabelFor(p => p.PreparerBrowserTemplate.Name)</td>
+            <td>@Html.TextBoxFor(p => p.PreparerBrowserTemplate.Name, new { data_bind = "attr: { name: preparerName() + 'Name' }" })</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(p => p.PreparerBrowserTemplate.MailingAddress)</td>
+            <td>@Html.TextBoxFor(p => p.PreparerBrowserTemplate.MailingAddress, new { data_bind = "attr: { name: preparerName() + 'MailingAddress' }" })</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(p => p.PreparerBrowserTemplate.TelephoneNumber)</td>
+            <td>@Html.TextBoxFor(p => p.PreparerBrowserTemplate.TelephoneNumber, new { data_bind = "attr: { name: preparerName() + 'TelephoneNumber' }" })</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(p => p.PreparerBrowserTemplate.SSN)</td>
+            <td>@Html.TextBoxFor(p => p.PreparerBrowserTemplate.SSN, new { data_bind = "attr: { name: preparerName() + 'SSN' }" })</td>
+        </tr>
+    </table>
+</div>
