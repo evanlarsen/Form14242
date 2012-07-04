@@ -90,7 +90,7 @@
                 <div class="sub-question-content">
                     <div class="upload-files" data-bind="foreach: { data: PromotionalMaterial, afterAdd: afterAdd, beforeRemove: beforeRemove }">
                         <div class="file-container">
-                            <input type="file" data-bind="attr: { name: promotionalMaterialName() }" />
+                            <input type="file" name="files" data-bind="attr: { name: promotionalMaterialName() }" />
                             <input type="button" value="remove attachment" data-bind="click: $parent.removePromotionalMaterial" />
                         </div>
                     </div>
