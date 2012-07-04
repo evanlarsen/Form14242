@@ -32,6 +32,8 @@ namespace Form14242.Web.ViewModels
         [DisplayName("6. Do you have copies of any promotional material supplied by the promoter")]
         public bool? HaveCopiesOfPromotionalMaterial { get; set; }
 
+        public List<Artifact> Artifacts { get; set; }
+
         [DisplayName("7. a. What was the cost for the promotional material")]
         public string CostForPromotionalMaterial { get; set; }
 

@@ -5,6 +5,9 @@ using System.Web;
 using System.Web.Mvc;
 using Form14242.Web.ViewModels;
 using Form14242.Web.Core;
+using System.IO;
+using System.Data.Entity.Validation;
+using System.Diagnostics;
 
 namespace Form14242.Web.Controllers
 {
@@ -27,10 +30,27 @@ namespace Form14242.Web.Controllers
         public ActionResult Form14242(Form14242Model vm)
         {
             vm.ReportedDate = DateTime.Now;
+            
+            // cant get uplaod to work w/ sql ce,. so, just commenting out for now
+            //vm.Artifacts = GetArtifacts(Request);
             using (Repository store = new Repository())
             {
                 store.Form14242.Add(vm);
-                store.SaveChanges();
+                try
+                {
+                    store.SaveChanges();
+                }
+                catch (DbEntityValidationException dbEx)
+                {
+                    foreach (var validationErrors in dbEx.EntityValidationErrors)
+                    {
+                        foreach (var validationError in validationErrors.ValidationErrors)
+                        {
+                            Trace.TraceInformation("Property: {0} Error: {1}", validationError.PropertyName, validationError.ErrorMessage);
+                        }
+                    }
+                    throw dbEx;
+                }
             }
 
             return RedirectToAction("Index");
@@ -72,6 +92,32 @@ namespace Form14242.Web.Controllers
         {
             PreparerBrowserTemplateVM vm = new PreparerBrowserTemplateVM();
             return View(vm);
+        }
+
+        private List<Artifact> GetArtifacts(HttpRequestBase request)
+        {
+            List<Artifact> artifacts = new List<Artifact>();
+            for (int i = 0; i < request.Files.Count; i++)
+            {
+                var file = request.Files[i];
+                artifacts.Add(CreateArtifact(file.FileName, file));
+            }
+            return artifacts;
+        }
+
+        private Artifact CreateArtifact(string fileName, HttpPostedFileBase file)
+        {
+            var inputStream = file.InputStream;
+
+            Artifact fileEntity = new Artifact();
+            fileEntity.Name = Path.GetFileName(fileName);
+            fileEntity.ContentType = file.ContentType;
+
+            byte[] fileContents = new byte[file.ContentLength];
+            inputStream.Read(fileContents, 0, file.ContentLength);
+            fileEntity.FileContents = fileContents;
+
+            return fileEntity;
         }
     }
 }

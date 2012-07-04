@@ -14,11 +14,13 @@ namespace Form14242.Web.Core
         public Repository()
             : base("Form14242")
         {
+            this.Configuration.ValidateOnSaveEnabled = false;
         }
 
         public DbSet<Form14242Model> Form14242 { get; set; }
         public DbSet<Preparer> Preparers { get; set; }
         public DbSet<Promoter> Promoters { get; set; }
+        public DbSet<Artifact> Artifacts { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -32,9 +34,10 @@ namespace Form14242.Web.Core
             modelBuilder.Entity<Form14242Model>()
                 .HasMany(p => p.Promoters);
             modelBuilder.Entity<Form14242Model>()
+                .HasMany(p => p.Artifacts);
+            modelBuilder.Entity<Form14242Model>()
                 .Property(p => p.ID).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             
-
             modelBuilder.Entity<Preparer>()
                 .HasKey(p => p.ID)
                 .ToTable("Preparers", "Store");
@@ -45,6 +48,12 @@ namespace Form14242.Web.Core
                 .HasKey(p => p.ID)
                 .ToTable("Promoters", "Store");
             modelBuilder.Entity<Promoter>()
+                .Property(p => p.ID).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+
+            modelBuilder.Entity<Artifact>()
+                .HasKey(p => p.ID)
+                .ToTable("Artifacts", "Store");
+            modelBuilder.Entity<Artifact>()
                 .Property(p => p.ID).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
         }
     }
