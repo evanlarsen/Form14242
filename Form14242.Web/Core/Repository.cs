@@ -55,6 +55,9 @@ namespace Form14242.Web.Core
                 .ToTable("Artifacts", "Store");
             modelBuilder.Entity<Artifact>()
                 .Property(p => p.ID).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            // because were using sql ce as a proof of concept, the largest binary field is an image. change this to varbinary when going to sql server
+            modelBuilder.Entity<Artifact>()
+                .Property(p => p.FileContents).HasColumnType("image").IsMaxLength();
         }
     }
 }

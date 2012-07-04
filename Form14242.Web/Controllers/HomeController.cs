@@ -31,8 +31,7 @@ namespace Form14242.Web.Controllers
         {
             vm.ReportedDate = DateTime.Now;
             
-            // cant get uplaod to work w/ sql ce,. so, just commenting out for now
-            //vm.Artifacts = GetArtifacts(Request);
+            vm.Artifacts = GetArtifacts(Request);
             using (Repository store = new Repository())
             {
                 store.Form14242.Add(vm);
@@ -71,13 +70,26 @@ namespace Form14242.Web.Controllers
             Form14242Model form = null;
             using (Repository store = new Repository())
             {
-                form = store.Form14242.Include("Preparers").Include("Promoters").Where(p => p.ID == id).FirstOrDefault();
+                form = store.Form14242.Include("Preparers").Include("Promoters").Include("Artifacts").Where(p => p.ID == id).FirstOrDefault();
             }
             if (form == null)
             {
                 throw new HttpException(404, string.Format("No Form found with the id of {0}", id));
             }
             return View(form);
+        }
+
+        public ActionResult DownloadFile(int id)
+        {
+            using (Repository store = new Repository())
+            {
+                Artifact file = store.Artifacts.FirstOrDefault(f => f.ID == id);
+
+                if (file == null) { throw new HttpException(404, "HTTP/1.1 404 Not Found"); }
+
+                return File(file.FileContents, file.ContentType);
+
+            }
         }
 
         [ChildActionOnly]

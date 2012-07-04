@@ -10,6 +10,7 @@
         .promoters-container table { border-bottom: 1px solid #ccc; margin-top: 8px; }
         .promoters-container table:last-child { border-bottom: none; }
         .promoters-container table tr td { padding-right: 12px; }
+        .upload-files ul { list-style-type: none; }
     </style>
 }
 
@@ -104,8 +105,15 @@
                 <div class="sub-question-header"><span>If <strong>YES,</strong> please attach promotional material</span></div>
                 <div class="sub-question-content">
                     <div class="upload-files">
-                        <div class="file-container">
-                        </div>
+                    @if (Model.Artifacts != null && Model.Artifacts.Count() > 0)
+                    {
+                        <ul>
+                        @foreach (var file in Model.Artifacts)
+                        {
+                        <li><a href="@Url.Action("DownloadFile", new { id = file.ID })">@file.Name</a></li>
+                        }
+                        </ul>
+                    }
                     </div>
                 </div>
             </div>
